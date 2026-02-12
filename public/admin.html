@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Convidados</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .total {
+        font-size: 32px;
+        font-weight: bold;
+        color: #2ecc71;
+    }
+
+    .search-box {
+        margin-bottom: 20px;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+    }
+
+    th {
+        background: #2c3e50;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background: #f2f2f2;
+    }
+
+    button.delete {
+        background: #e74c3c;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+    }
+
+    button.delete:hover {
+        background: #c0392b;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Painel de Convidados</h1>
+
+    <div class="card">
+        Confirmados:
+        <div class="total" id="totalConfirmados">0</div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Buscar convidado pelo nome...">
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Confirmado</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tabelaConvidados">
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+async function carregarConvidados() {
+    const response = await fetch("/convidados");
+    const convidados = await response.json();
+
+    const tabela = document.getElementById("tabelaConvidados");
+    const total = document.getElementById("totalConfirmados");
+
+    tabela.innerHTML = "";
+
+    let confirmados = 0;
+
+    convidados.forEach(convidado => {
+
+        if (convidado.checkbox === 1) {
+            confirmados++;
+        }
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+            <td>${convidado.nome}</td>
+            <td>${Number(convidado.checkbox) === 1 ? "Não" : "Sim"}</td>
+            <td>
+                <button class="delete" onclick="excluir(${convidado.id})">
+                    Excluir
+                </button>
+            </td>
+        `;
+
+        tabela.appendChild(tr);
+    });
+
+    total.textContent = confirmados;
+}
+
+async function excluir(id) {
+    const confirmar = confirm("Tem certeza que deseja excluir?");
+    if (!confirmar) return;
+
+    await fetch(`/convidados/${id}`, {
+        method: "DELETE"
+    });
+
+    carregarConvidados();
+}
+
+document.getElementById("searchInput").addEventListener("input", function () {
+    const filtro = this.value.toLowerCase();
+    const linhas = document.querySelectorAll("#tabelaConvidados tr");
+
+    linhas.forEach(linha => {
+        const nome = linha.children[0].textContent.toLowerCase();
+        linha.style.display = nome.includes(filtro) ? "" : "none";
+    });
+});
+
+carregarConvidados();
+</script>
+
+</body>
+</html>
