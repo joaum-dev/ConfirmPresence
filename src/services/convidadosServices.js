@@ -17,3 +17,16 @@ export async function deletar(params = {}) {
   const { id } = params;
   return await db.run("DELETE FROM convidados WHERE id = ?", [id]);
 }
+
+export async function search(query = {}) {
+  const { nome } = query;
+
+  if(!nome) {
+    return await db.all("SELECT * FROM convidados")
+  }
+
+  return await db.all(
+    "SELECT * FROM convidados WHERE nome LIKE ?",
+    [`%${nome}%`],
+  );
+}

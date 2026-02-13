@@ -28,3 +28,13 @@ export async function deletar(req, res) {
     res.sendStatus(500)
   }
 }
+
+export async function search(req, res) {
+  try {
+    const convidados = await convidadosServices.search(req.query)
+    res.status(200).json(convidados)
+  } catch (error) {
+    console.error('Usuario não encontrado!', error)
+    res.sendStatus(500)
+  }
+}
