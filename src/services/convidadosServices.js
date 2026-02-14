@@ -25,13 +25,16 @@ export async function deletar(params = {}) {
 export async function search(query = {}) {
   const { nome } = query;
 
-  if(!nome) {
-    return await pool.query("SELECT id, nome, checkbox FROM convidados ORDER BY id DESC")
+  if (!nome) {
+    const result = await pool.query(
+      "SELECT id, nome, checkbox FROM convidados ORDER BY id DESC"
+    );
+    return result.rows;
   }
 
-  const result =  await db.all(
-    "SELECT id, nome FROM convidados WHERE nome ILIKE $1",
-    [`%${nome}%`],
+  const result = await pool.query(
+    "SELECT id, nome, checkbox FROM convidados WHERE nome ILIKE $1",
+    [`%${nome}%`]
   );
 
   return result.rows;
