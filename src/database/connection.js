@@ -12,20 +12,11 @@ pool.query(`
   CREATE TABLE IF NOT EXISTS convidados (
     id SERIAL PRIMARY KEY,
     nome TEXT NOT NULL,
-    checkbox BOOLEAN INTEGER
+    checkbox INTEGER
   );
 `)
 .then(() => console.log("Tabela verificada/criada"))
 .catch(err => console.error("Erro ao criar tabela:", err));
-
-
-const result = await pool.query(`
-  SELECT column_name, data_type
-  FROM information_schema.columns
-  WHERE table_name = 'convidados';
-`);
-
-console.log(result.rows);
 
 
 export default pool;
