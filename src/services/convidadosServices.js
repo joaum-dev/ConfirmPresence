@@ -3,10 +3,12 @@ import pool from "../database/connection.js"
 export async function CREATE(body = {}) {
   const { nome, checkbox } = body;
 
-  await pool.query("INSERT INTO convidados (nome, checkbox) VALUES ($1, $2)", [
+  const result = await pool.query("INSERT INTO convidados (nome, checkbox) VALUES ($1, $2) RETURNING *", [
     nome,
     checkbox,
   ]);
+
+  return result.rows[0];
 }
 
 export async function listAll() {
