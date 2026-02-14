@@ -19,4 +19,13 @@ pool.query(`
 .catch(err => console.error("Erro ao criar tabela:", err));
 
 
+const result = await pool.query(`
+  SELECT column_name, data_type
+  FROM information_schema.columns
+  WHERE table_name = 'convidados';
+`);
+
+console.log(result.rows);
+
+
 export default pool;
