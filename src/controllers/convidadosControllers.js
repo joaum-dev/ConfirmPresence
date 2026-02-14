@@ -2,7 +2,7 @@ import * as convidadosServices from "../services/convidadosServices.js";
 
 export async function CREATE(req, res) {
   try {
-    convidadosServices.CREATE(req.body);
+    await onvidadosServices.CREATE(req.body);
     res.sendStatus(201);
   } catch (error) {
     console.log("Erro ao registrar!");
