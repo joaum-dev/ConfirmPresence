@@ -8,4 +8,15 @@ const pool = new Pool({
   },
 });
 
+pool.query(`
+  CREATE TABLE IF NOT EXISTS convidados (
+    id SERIAL PRIMARY KEY,
+    nome TEXT NOT NULL,
+    checkbox INTEGER NOT NULL
+  );
+`)
+.then(() => console.log("Tabela verificada/criada"))
+.catch(err => console.error("Erro ao criar tabela:", err));
+
+
 export default pool;
