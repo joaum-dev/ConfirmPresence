@@ -203,6 +203,7 @@
         const nome = document.getElementById("nome").value.trim();
         const card = document.getElementById("cardConfirmacao");
         const checkbox = document.getElementById('checkbox').checked
+        const inputNome = document.getElementById("nome")
 
         alert("Registrado com sucesso!")
         
@@ -229,8 +230,8 @@
                 checkbox: checkbox ? 1 : 0
             })
         })
-
-        nome == ""
+        
+        inputNome.value = "";
       }
     </script>
   </body>
