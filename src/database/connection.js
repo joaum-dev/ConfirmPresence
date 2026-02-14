@@ -12,7 +12,7 @@ pool.query(`
   CREATE TABLE IF NOT EXISTS convidados (
     id SERIAL PRIMARY KEY,
     nome TEXT NOT NULL,
-    checkbox INTEGER NOT NULL
+    checkbox BOOLEAN INTEGER NOT NULL
   );
 `)
 .then(() => console.log("Tabela verificada/criada"))
