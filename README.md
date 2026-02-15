@@ -3,7 +3,7 @@
 Projeto desenvolvido com:
 - Node.js
 - Express
-- SQLite
+- PostgresSQL
 - HTML/CSS/JS
 
 Funcionalidades:
